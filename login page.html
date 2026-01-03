@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    :root{
+      
+      --card-bg: rgba(148, 73, 73, 0.06);
+      --glass-border: rgba(83, 9, 126, 0.08);
+      --muted: #bfb6d8;
+      --primary: #003514;
+      --primary-hover: #2b6fd6;
+      --accent: #0e2563;
+      --success: #067434;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial}
+    body{
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(to right, #220268, #7931ff);
+      color:#eff0f6;padding:32px;
+    }
+
+    .login-wrapper{width:100%;max-width:420px;padding:18px}
+
+    .login-box{
+      background:linear-gradient(to right, #df0357, #3d0216);
+      border:1px solid var(--glass-border);
+      border-radius:16px;padding:28px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    h2{margin:0 0 12px 0;font-size:20px;color:#fff}
+    label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+
+    .field{
+      width:100%;display:block
+    }
+
+    input[type=email],input[type=password]{
+      width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);
+      background:rgba(255,255,255,0.02);Color:#000000;font-size:14px;transition:box-shadow .18s,transform .12s
+    }
+    input::placeholder{color:rgba(7, 2, 82, 0.45)}
+    input:focus{outline:none;box-shadow:0 8px 26px rgba(123,76,255,0.12);border-color:var(--accent);transform:translateY(-1px)}
+
+    .actions{margin-top:18px;display:flex;gap:12px}
+    .btn{flex:1;padding:12px 14px;border-radius:10px;border:none;color:white;font-weight:600;cursor:pointer;background:var(--primary);box-shadow:0 8px 20px rgba(0,0,0,0.24);transition:transform .12s,opacity .12s}
+    .btn.hovered{background:var(--primary-hover);box-shadow:0 12px 30px rgba(44,111,214,0.18)}
+    .btn:active{transform:translateY(1px);opacity:0.95}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .btn:hover{transform:translateY(-2px)}
+
+    #msg{margin-top:12px;font-size:14px;min-height:18px}
+
+    a.create{display:inline-block;margin-top:12px;color:var(--muted);text-decoration:none;font-size:13px}
+
+    @media (max-width:520px){.login-wrapper{padding:12px}.login-box{padding:18px}}
+  </style>
+
+  <script>
+    window.onload = function () {
+      const email = document.getElementById("email");
+      if(email) email.focus();
+    };
+
+    function mouseOver(btn){
+      if(!btn) return;
+      btn.classList.add('hovered');
+      btn.style.color = '#fff';
+      btn.dataset.origText = btn.textContent;
+      btn.textContent = 'Click here';
+    }
+    function mouseOut(btn){
+      if(!btn) return;
+      btn.classList.remove('hovered');
+      btn.style.color = '#fff';
+      if(btn.dataset.origText) btn.textContent = btn.dataset.origText;
+    }
+
+    function loginClick(btn) {
+      var email = document.getElementById("email").value.trim();
+      var password = document.getElementById("password").value;
+      var msg = document.getElementById("msg");
+      var gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+      msg.textContent = '';
+
+      if (!email || !password) {
+        msg.textContent = "All fields are required";
+        msg.style.color = "#300101";
+        return;
+      }
+      if (!gmailPattern.test(email)) {
+        msg.textContent = "Enter a valid Gmail address";
+        msg.style.color = "#ff6b6b";
+        return;
+      }
+
+      if (password.length < 6) {
+        msg.textContent = "Password must be at least 6 characters";
+        msg.style.color = "#ff6b6b";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.style.opacity = '0.9';
+      btn.textContent = 'Signing in...';
+      setTimeout(()=>{
+        btn.textContent = 'Signed in';
+        msg.textContent = 'Login successful';
+        msg.style.color = '#19a974';
+        btn.disabled = false;
+      },900);
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="login-box">
+    <h2>Login</h2>
+
+    User Id:
+    <input type="email" id="email" placeholder="Enter Gmail" >
+
+    Password:
+    <input type="password" id="password" placeholder="Enter Password">
+<br><br>
+    <button class="btn"
+      onmouseover="mouseOver(this)"
+      onmouseout="mouseOut(this)"
+      onclick="loginClick(this)">
+      Login
+    </button><br><br>
+    <a href="signin.html">Create Account</a>
+    <p id="msg"></p>
+  </div>
+
+</body>
+</html>
